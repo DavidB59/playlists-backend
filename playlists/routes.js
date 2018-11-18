@@ -2,13 +2,14 @@ const { Router } = require('express')
 const Playlist = require('./model')
 const Song = require('../songs/model')
 const router = new Router()
+const auth = require('../auth/middleware')
 
-router.get('/playlists',(req,res,next) => {
-  console.log(process.env.DATABASE_URL )
+
+router.get('/playlists', auth, (req,res,next) => {
   Playlist
     .findAll()
     .then(playlists => {
-      res.send({playlists})
+      res.send(playlists.filter( playlist => playlist.userId === req.user.id))
     })
     .catch(error => next(error))
 })
