@@ -4,6 +4,7 @@ const Song = require('../songs/model')
 const router = new Router()
 
 router.get('/playlists',(req,res,next) => {
+  console.log(process.env.DATABASE_URL )
   Playlist
     .findAll()
     .then(playlists => {
