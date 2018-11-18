@@ -1,6 +1,5 @@
 const Sequelize = require('sequelize')
 const sequelize = require('../db')
-//const Playlist = require('../playlists/model')
 
 const Song = sequelize.define('songs', {
   title: {
@@ -15,9 +14,9 @@ const Song = sequelize.define('songs', {
   },
   album: {
     type: Sequelize.STRING,
-    field: 'artist',
+    field: 'album',
     allowNull: false
-  }
+  },
 }, {
   timestamps: false,
   tableName: 'songs'

@@ -2,7 +2,6 @@ const Sequelize = require('sequelize')
 const sequelize = require('../db')
 const User = require('../users/model')
 const Song = require('../songs/model')
-const auth = require('../auth/middleware')
 
 const Playlist = sequelize.define('playlists', {
   name: {
@@ -13,7 +12,6 @@ const Playlist = sequelize.define('playlists', {
   userId: {
     type: Sequelize.INTEGER,
     field: 'user_id',
-   // defaultValue: req.user.id
   }
 }, {
   timestamps: false,
@@ -21,6 +19,7 @@ const Playlist = sequelize.define('playlists', {
 })
 Playlist.belongsTo(User)
 Playlist.hasMany(Song, {onDelete: 'CASCADE'})
+Song.belongsTo(Playlist)
 module.exports = Playlist
 
 

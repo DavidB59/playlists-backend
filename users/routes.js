@@ -14,7 +14,6 @@ if (req.body.confirmation !== req.body.password) {
     message: `Passwords do not match `
   })
 }
-//console.log(req.body)
   User
     .create(user)
     .then(user => {
