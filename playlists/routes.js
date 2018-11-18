@@ -3,8 +3,6 @@ const Playlist = require('./model')
 const Song = require('../songs/model')
 const router = new Router()
 const auth = require('../auth/middleware')
-
-
 router.get('/playlists', auth, (req,res,next) => {
   Playlist
     .findAll()
@@ -14,11 +12,11 @@ router.get('/playlists', auth, (req,res,next) => {
     .catch(error => next(error))
 })
 
-router.get('/playlists/:id', (req, res, next) => {
+router.get('/playlists/:id',auth, (req, res, next) => {
   Playlist
   .findById(req.params.id, { include: [Song]})
   .then(playlist=> {
-      if (!playlist) {
+      if (!playlist ||playlist.userId !== req.user.id ) {
         return res.status(404).send({
           message: `Playlist does not exist`
         })
@@ -28,20 +26,20 @@ router.get('/playlists/:id', (req, res, next) => {
     .catch(error => next(error))
 })
 
-router.post('/playlists', (req, res, next) => {
+router.post('/playlists', auth, (req, res, next) => {
   Playlist
-    .create(req.body)
+    .create({name:req.body.name, userId:req.user.id})
     .then(playlist=> {
       return res.status(201).send(playlist)
     })
     .catch(error => next(error))
 })
 
-router.put('/playlists/:id', (req, res, next) => {
+router.put('/playlists/:id',auth,  (req, res, next) => {
   Playlist
     .findById(req.params.id)
     .then(playlist=> {
-      if (!playlist) {
+      if (!playlist ||playlist.userId !== req.user.id ) {
         return res.status(404).send({
           message: `Playlist does not exist`
         })
@@ -51,11 +49,11 @@ router.put('/playlists/:id', (req, res, next) => {
     .catch(error => next(error))
 })
 
-router.delete('/playlists/:id', (req, res, next) => {
+router.delete('/playlists/:id',auth, (req, res, next) => {
   Playlist
     .findById(req.params.id, { include: [Song]})
     .then(playlist=> {
-      if (!playlist) {
+      if (!playlist ||playlist.userId !== req.user.id ) {
         return res.status(404).send({
           message: `Playlist does not exist`
         })

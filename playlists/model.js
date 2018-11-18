@@ -2,6 +2,7 @@ const Sequelize = require('sequelize')
 const sequelize = require('../db')
 const User = require('../users/model')
 const Song = require('../songs/model')
+const auth = require('../auth/middleware')
 
 const Playlist = sequelize.define('playlists', {
   name: {
@@ -11,7 +12,8 @@ const Playlist = sequelize.define('playlists', {
   },
   userId: {
     type: Sequelize.INTEGER,
-    field: 'user_id'
+    field: 'user_id',
+   // defaultValue: req.user.id
   }
 }, {
   timestamps: false,
