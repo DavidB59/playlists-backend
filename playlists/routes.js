@@ -4,11 +4,11 @@ const Song = require('../songs/model')
 const router = new Router()
 const auth = require('../auth/middleware')
 
-router.get('/playlists', auth, (req,res,next) => {
+router.get('/playlists',auth,(req,res,next) => {
   Playlist
     .findAll()
     .then(playlists => {
-      res.send(playlists.filter( playlist => playlist.userId === req.user.id))
+       res.send(playlists.filter( playlist => playlist.userId === req.user.id))
     })
     .catch(error => next(error))
 })
